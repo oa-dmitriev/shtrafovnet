@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package proto;
-option go_package = "github.com/oa-dmitriev/shtrafovnet/gen/go/legalinfo";
+option go_package = "github.com/oa-dmitriev/shtrafovnet/proto/gen/go/legalinfo";
 
 import "google/api/annotations.proto";
 

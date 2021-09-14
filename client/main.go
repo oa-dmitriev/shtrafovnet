@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"legalinfoclient/legalinfo"
+	legalinfo "github.com/oa-dmitriev/shtrafovnet/proto/gen/go"
 
 	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
