@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package legalinfo;
+
+import "google/api/annotations.proto";
+
+message Inn {
+  string INN = 1;
+}
+
+message Info {
+  string CompanyName = 1;
+  string CeoName = 2;
+  string INN = 3;
+  string KPP = 4;
+}
+
+service LegalInfoFetcher {
+  rpc GetInfoByInn (Inn) returns (Info) {}
+}
