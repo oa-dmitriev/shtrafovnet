@@ -1,6 +1,7 @@
 syntax = "proto3";
 
-package legalinfo;
+package proto;
+option go_package = "github.com/oa-dmitriev/shtrafovnet/gen/go/legalinfo";
 
 import "google/api/annotations.proto";
 
@@ -16,5 +17,10 @@ message Info {
 }
 
 service LegalInfoFetcher {
-  rpc GetInfoByInn (Inn) returns (Info) {}
+  rpc GetInfoByInn (Inn) returns (Info) {
+    option (google.api.http) = {
+      post: "/v1/inn"
+      body: "*"
+    };
+  }
 }

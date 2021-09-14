@@ -31,7 +31,7 @@ func NewLegalInfoFetcherClient(cc grpc.ClientConnInterface) LegalInfoFetcherClie
 
 func (c *legalInfoFetcherClient) GetInfoByInn(ctx context.Context, in *Inn, opts ...grpc.CallOption) (*Info, error) {
 	out := new(Info)
-	err := c.cc.Invoke(ctx, "/legalinfo.LegalInfoFetcher/GetInfoByInn", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.LegalInfoFetcher/GetInfoByInn", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +76,7 @@ func _LegalInfoFetcher_GetInfoByInn_Handler(srv interface{}, ctx context.Context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/legalinfo.LegalInfoFetcher/GetInfoByInn",
+		FullMethod: "/proto.LegalInfoFetcher/GetInfoByInn",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(LegalInfoFetcherServer).GetInfoByInn(ctx, req.(*Inn))
@@ -88,7 +88,7 @@ func _LegalInfoFetcher_GetInfoByInn_Handler(srv interface{}, ctx context.Context
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var LegalInfoFetcher_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "legalinfo.LegalInfoFetcher",
+	ServiceName: "proto.LegalInfoFetcher",
 	HandlerType: (*LegalInfoFetcherServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
