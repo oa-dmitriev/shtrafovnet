@@ -6,7 +6,7 @@ import (
 	"net"
 	"os"
 
-	"legalinfoserver/legalinfo"
+	legalinfo "github.com/oa-dmitriev/shtrafovnet/proto/gen/go"
 
 	"github.com/PuerkitoBio/goquery"
 	"google.golang.org/grpc"
