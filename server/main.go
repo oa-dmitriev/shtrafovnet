@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"net/http"
-	"os"
 	"sync"
 
 	gw "github.com/oa-dmitriev/shtrafovnet/proto/gen/go"
@@ -14,6 +14,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+
 	_ "github.com/oa-dmitriev/shtrafovnet/docs"
 	"google.golang.org/grpc"
 )
@@ -38,25 +39,21 @@ func (l *LegalInfoFetcher) GetInfoByInn(
 	inn *gw.Inn,
 ) (*gw.Info, error) {
 	log.Println("Came with inn: ", inn.INN)
-	return ParseURL(url)
+	return ParseURL(inn.INN)
 }
 
-func ParseURL(url string) (*gw.Info, error) {
-	file, err := os.Open("text.log")
+func ParseURL(inn string) (*gw.Info, error) {
+	url := fmt.Sprintf(url, inn)
+	res, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	defer file.Close()
-	// b, err := ioutil.ReadAll(file)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// fmt.Println(string(b))
-	doc, err := goquery.NewDocumentFromReader(file)
-	if err != nil {
-		log.Fatal(err)
-	}
+	defer res.Body.Close()
 
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
 	info := gw.Info{}
 	info.CeoName = doc.Find(".gtm_main_fl").Text()
 	info.INN = doc.Find("#clip_inn").Text()
@@ -88,8 +85,6 @@ func main() {
 		wg.Done()
 	}()
 
-	// -----
-
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -104,9 +99,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Start HTTP server (and proxy calls to gRPC server endpoint)
 	wg.Add(1)
 	go func() {
+		log.Println("Listening on port: 8081")
 		http.ListenAndServe(":8081", mux)
 		wg.Done()
 	}()

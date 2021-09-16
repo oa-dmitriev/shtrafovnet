@@ -2,6 +2,4 @@ proto/buf.gen.yaml
 proto/buf.lock
 proto/buf.yaml
 
-*.mod
-*.sum
 *.log

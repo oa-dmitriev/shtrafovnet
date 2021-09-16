@@ -1,0 +1,20 @@
+version: '3.3'
+services:
+
+  inn-grpc-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - "8081:8081"
+      - "9090:9090"
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: swagger-container 
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./docs:/usr/share/nginx/html/docs
+    environment:
+      API_URL: docs/swagger.yaml
