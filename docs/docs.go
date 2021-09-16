@@ -1,6 +1,4 @@
-// Package classification awesome.
-//
-// Documentation of our awesome API.
+// Package classification LegalInfoFetcher
 //
 //     Schemes: http
 //     BasePath: /v1/inn
