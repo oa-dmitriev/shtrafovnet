@@ -14,6 +14,7 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	_ "github.com/oa-dmitriev/shtrafovnet/docs"
 	"google.golang.org/grpc"
 )
 
