@@ -27,3 +27,5 @@ package docs
 // Foobar does some amazing stuff.
 // responses:
 //   200: foobarResponse
+
+type A struct{}
