@@ -19,7 +19,7 @@ message Info {
 service LegalInfoFetcher {
   rpc GetInfoByInn (Inn) returns (Info) {
     option (google.api.http) = {
-      post: "/v1/inn"
+      post: "/v1/{INN}"
       body: "*"
     };
   }
