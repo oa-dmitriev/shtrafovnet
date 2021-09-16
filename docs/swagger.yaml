@@ -21,8 +21,7 @@ definitions:
     type: object
     x-go-package: github.com/oa-dmitriev/shtrafovnet/proto/gen/go
 info:
-  description: Documentation of our awesome API.
-  title: awesome.
+  description: Package classification LegalInfoFetcher
   version: 1.0.0
 paths:
   /v1/inn{INN}:
