@@ -22,7 +22,7 @@ import (
 var (
 	url                = "https://www.rusprofile.ru/search?query=%s&type=ul"
 	grpcServerEndpoint = flag.String(
-		"grpc-server-endpoint", "127.0.0.1:9090", "grpc server endpoint",
+		"grpc-server-endpoint", ":9090", "grpc server endpoint",
 	)
 )
 

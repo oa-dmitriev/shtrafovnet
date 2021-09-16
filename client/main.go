@@ -28,7 +28,7 @@ func main() {
 	}
 	defer grpcConn.Close()
 	client := gw.NewLegalInfoFetcherClient(grpcConn)
-	info, err := client.GetInfoByInn(context.Background(), &gw.Inn{INN: "123"})
+	info, err := client.GetInfoByInn(context.Background(), &gw.Inn{INN: "7451031131"})
 	if err != nil {
 		log.Fatal(err)
 	}
