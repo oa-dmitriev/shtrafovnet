@@ -3,9 +3,8 @@
 // Documentation of our awesome API.
 //
 //     Schemes: http
-//     BasePath: /
+//     BasePath: /v1/inn
 //     Version: 1.0.0
-//     Host: some-url.com
 //
 //     Consumes:
 //     - application/json
@@ -23,9 +22,7 @@
 // swagger:meta
 package docs
 
-// swagger:route POST /foobar foobar-tag idOfFoobarEndpoint
-// Foobar does some amazing stuff.
+// swagger:route POST /v1/inn/{INN}
+// Get legal info by INN
 // responses:
-//   200: foobarResponse
-
-type A struct{}
+//   200: innResponse
