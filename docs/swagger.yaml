@@ -1,21 +1,11 @@
-basePath: /
+basePath: /v1/inn
 consumes:
 - application/json
-host: some-url.com
 info:
   description: Documentation of our awesome API.
   title: awesome.
   version: 1.0.0
-paths:
-  /foobar:
-    post:
-      operationId: idOfFoobarEndpoint
-      responses:
-        "200":
-          $ref: '#/responses/foobarResponse'
-      summary: Foobar does some amazing stuff.
-      tags:
-      - foobar-tag
+paths: {}
 produces:
 - application/json
 schemes:

@@ -21,8 +21,3 @@
 //
 // swagger:meta
 package docs
-
-// swagger:route POST /v1/inn/{INN}
-// Get legal info by INN
-// responses:
-//   200: innResponse
