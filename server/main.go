@@ -2,17 +2,18 @@ package main
 
 import (
 	"context"
-	"flag"
-	"fmt"
 	"log"
+	"net"
 	"net/http"
 	"os"
+	"sync"
 
 	gw "github.com/oa-dmitriev/shtrafovnet/proto/gen/go"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"flag"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 )
 
@@ -35,6 +36,7 @@ func (l *LegalInfoFetcher) GetInfoByInn(
 	ctx context.Context,
 	inn *gw.Inn,
 ) (*gw.Info, error) {
+	log.Println("Came with inn: ", inn.INN)
 	return ParseURL(url)
 }
 
@@ -66,24 +68,35 @@ func ParseURL(url string) (*gw.Info, error) {
 }
 
 func main() {
+	flag.Parse()
+
+	lis, err := net.Listen("tcp", *grpcServerEndpoint)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	server := grpc.NewServer()
+
+	gw.RegisterLegalInfoFetcherServer(server, NewLegalInfoFetcher())
+
+	wg := sync.WaitGroup{}
+
+	wg.Add(1)
+	go func() {
+		server.Serve(lis)
+		wg.Done()
+	}()
+
+	// -----
+
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	// lis, err := net.Listen("tcp", ":8081")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// server := grpc.NewServer()
-
-	// legalinfo.RegisterLegalInfoFetcherServer(server, NewLegalInfoFetcher())
-	// server.Serve(lis)
-
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
-	err := gw.RegisterLegalInfoFetcherHandlerFromEndpoint(
+	err = gw.RegisterLegalInfoFetcherHandlerFromEndpoint(
 		ctx, mux, *grpcServerEndpoint, opts,
 	)
 	if err != nil {
@@ -91,6 +104,11 @@ func main() {
 	}
 
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
-	fmt.Println("listening...")
-	log.Fatal(http.ListenAndServe(":8081", mux))
+	wg.Add(1)
+	go func() {
+		http.ListenAndServe(":8081", mux)
+		wg.Done()
+	}()
+
+	wg.Wait()
 }

@@ -5,18 +5,17 @@ import (
 	"log"
 	"net/http"
 
-	legalinfo "github.com/oa-dmitriev/shtrafovnet/proto/gen/go"
+	gw "github.com/oa-dmitriev/shtrafovnet/proto/gen/go"
 
 	"github.com/gin-gonic/gin"
-	"google.golang.org/grpc"
 )
 
-func NewHandler(client legalinfo.LegalInfoFetcherClient) *handler {
+func NewHandler(client gw.LegalInfoFetcherClient) *handler {
 	return &handler{client}
 }
 
 type handler struct {
-	client legalinfo.LegalInfoFetcherClient
+	client gw.LegalInfoFetcherClient
 }
 
 type Represent struct {
@@ -27,10 +26,10 @@ type Represent struct {
 }
 
 func (h *handler) Index(c *gin.Context) {
-	inn := &legalinfo.Inn{INN: "123"}
+	inn := &gw.Inn{INN: "123"}
 	info, err := h.client.GetInfoByInn(context.Background(), inn)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("HERE", err)
 	}
 
 	c.IndentedJSON(http.StatusOK, &Represent{
@@ -42,18 +41,18 @@ func (h *handler) Index(c *gin.Context) {
 }
 
 func main() {
-	grpcConn, err := grpc.Dial(
-		"127.0.0.1:8081",
-		grpc.WithInsecure(),
-	)
-	if err != nil {
-		log.Fatalf("cannot connect to grpc")
-	}
-	defer grpcConn.Close()
-	client := legalinfo.NewLegalInfoFetcherClient(grpcConn)
-
-	handler := NewHandler(client)
-	r := gin.Default()
-	r.GET("/", handler.Index)
-	r.Run()
+	// 	grpcConn, err := grpc.Dial(
+	// 		"127.0.0.1:9090",
+	// 		grpc.WithInsecure(),
+	// 	)
+	// 	if err != nil {
+	// 		log.Fatalf("cannot connect to grpc")
+	// 	}
+	// 	defer grpcConn.Close()
+	// 	client := legalinfo.NewLegalInfoFetcherClient(grpcConn)
+	//
+	// 	handler := NewHandler(client)
+	// 	r := gin.Default()
+	// 	r.GET("/", handler.Index)
+	// 	r.Run()
 }

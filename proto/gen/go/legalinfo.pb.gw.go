@@ -35,14 +35,6 @@ func request_LegalInfoFetcher_GetInfoByInn_0(ctx context.Context, marshaler runt
 	var protoReq Inn
 	var metadata runtime.ServerMetadata
 
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
-	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-
 	var (
 		val string
 		ok  bool
@@ -68,14 +60,6 @@ func request_LegalInfoFetcher_GetInfoByInn_0(ctx context.Context, marshaler runt
 func local_request_LegalInfoFetcher_GetInfoByInn_0(ctx context.Context, marshaler runtime.Marshaler, server LegalInfoFetcherServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq Inn
 	var metadata runtime.ServerMetadata
-
-	newReader, berr := utilities.IOReaderFactory(req.Body)
-	if berr != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
-	}
-	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
 
 	var (
 		val string
@@ -105,13 +89,13 @@ func local_request_LegalInfoFetcher_GetInfoByInn_0(ctx context.Context, marshale
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterLegalInfoFetcherHandlerFromEndpoint instead.
 func RegisterLegalInfoFetcherHandlerServer(ctx context.Context, mux *runtime.ServeMux, server LegalInfoFetcherServer) error {
 
-	mux.Handle("POST", pattern_LegalInfoFetcher_GetInfoByInn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_LegalInfoFetcher_GetInfoByInn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.LegalInfoFetcher/GetInfoByInn", runtime.WithHTTPPathPattern("/v1/{INN}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.LegalInfoFetcher/GetInfoByInn", runtime.WithHTTPPathPattern("/v1/inn/{INN}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -169,11 +153,11 @@ func RegisterLegalInfoFetcherHandler(ctx context.Context, mux *runtime.ServeMux,
 // "LegalInfoFetcherClient" to call the correct interceptors.
 func RegisterLegalInfoFetcherHandlerClient(ctx context.Context, mux *runtime.ServeMux, client LegalInfoFetcherClient) error {
 
-	mux.Handle("POST", pattern_LegalInfoFetcher_GetInfoByInn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_LegalInfoFetcher_GetInfoByInn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.LegalInfoFetcher/GetInfoByInn", runtime.WithHTTPPathPattern("/v1/{INN}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.LegalInfoFetcher/GetInfoByInn", runtime.WithHTTPPathPattern("/v1/inn/{INN}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -193,7 +177,7 @@ func RegisterLegalInfoFetcherHandlerClient(ctx context.Context, mux *runtime.Ser
 }
 
 var (
-	pattern_LegalInfoFetcher_GetInfoByInn_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"v1", "INN"}, ""))
+	pattern_LegalInfoFetcher_GetInfoByInn_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "inn", "INN"}, ""))
 )
 
 var (
